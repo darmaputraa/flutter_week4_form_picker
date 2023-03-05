@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_week4_form_picker/create_post_page.dart';
+import 'package:flutter_week4_form_picker/home_form.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,6 +14,6 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: const CreatePostPage());
+        home: const FormPage());
   }
 }
