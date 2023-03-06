@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
-class ResultPage extends StatefulWidget {
-  String imagePick, birthDate, colorFav, about;
+class ResultPage extends StatelessWidget {
+  final String imagePick, birthDate, about;
+  Color? colorFav;
 
   ResultPage(
       {Key? key,
@@ -12,11 +13,6 @@ class ResultPage extends StatefulWidget {
       : super(key: key);
 
   @override
-  State<ResultPage> createState() => _ResultPageState();
-}
-
-class _ResultPageState extends State<ResultPage> {
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -25,9 +21,18 @@ class _ResultPageState extends State<ResultPage> {
         centerTitle: true,
       ),
       body: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Text('Birth: ${widget.birthDate}'),
-          Text('About: ${widget.about}'),
+          ListTile(
+            title: Text('Birth: $birthDate'),
+          ),
+          ListTile(
+            title: Text(
+              "$about'",
+              textAlign: TextAlign.center,
+            ),
+          ),
+          CircleAvatar(backgroundColor: colorFav)
         ],
       ),
     );

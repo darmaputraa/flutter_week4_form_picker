@@ -74,6 +74,10 @@ class _FormPageState extends State<FormPage> {
         });
   }
 
+  void changeColor(Color color) {
+    setState(() => currentColor = color);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -90,7 +94,7 @@ class _FormPageState extends State<FormPage> {
             pickField(),
             const Text('Birth'),
             dateField(),
-            const Text('Favorit Color'),
+            Text('Favorit Color : $currentColor'),
             colorField(),
             const Text('About'),
             aboutField(),
@@ -99,7 +103,7 @@ class _FormPageState extends State<FormPage> {
                     builder: (context) => ResultPage(
                           imagePick: '',
                           birthDate: dateCtl.text,
-                          colorFav: '',
+                          colorFav: currentColor,
                           about: captionText.text,
                         ))),
                 child: const Text("Save"))
@@ -126,6 +130,7 @@ class _FormPageState extends State<FormPage> {
   Widget dateField() {
     return TextFormField(
       readOnly: true,
+      textAlign: TextAlign.start,
       controller: dateCtl,
       decoration: InputDecoration(
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(4)),
@@ -154,6 +159,7 @@ class _FormPageState extends State<FormPage> {
     return TextField(
       controller: captionText,
       keyboardType: TextInputType.multiline,
+      textAlign: TextAlign.start,
       maxLines: 5,
       decoration: InputDecoration(
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(4))),
