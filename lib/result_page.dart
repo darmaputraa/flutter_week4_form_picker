@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class ResultPage extends StatelessWidget {
-  final String imagePick, birthDate, colorFav, about;
+class ResultPage extends StatefulWidget {
+  String imagePick, birthDate, colorFav, about;
 
-  const ResultPage(
+  ResultPage(
       {Key? key,
       required this.imagePick,
       required this.birthDate,
@@ -11,6 +11,11 @@ class ResultPage extends StatelessWidget {
       required this.about})
       : super(key: key);
 
+  @override
+  State<ResultPage> createState() => _ResultPageState();
+}
+
+class _ResultPageState extends State<ResultPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,8 +26,8 @@ class ResultPage extends StatelessWidget {
       ),
       body: Column(
         children: [
-          Text("Birth: $birthDate"),
-          Text("About $about"),
+          Text('Birth: ${widget.birthDate}'),
+          Text('About: ${widget.about}'),
         ],
       ),
     );

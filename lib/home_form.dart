@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter_week4_form_picker/button_save.dart';
+import 'package:flutter_week4_form_picker/result_page.dart';
 import 'package:open_file/open_file.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
@@ -16,7 +16,6 @@ class _FormPageState extends State<FormPage> {
   String? filePick;
   TextEditingController dateCtl = TextEditingController();
   TextEditingController captionText = TextEditingController();
-  final _formKey = GlobalKey<FormState>();
 
   void _pickFile() async {
     final result = await FilePicker.platform.pickFiles();
@@ -47,7 +46,6 @@ class _FormPageState extends State<FormPage> {
     }
   }
 
-  Color pickerColor = const Color(0xffffc107);
   Color currentColor = Colors.transparent;
 
   void _selectColor(BuildContext context) {
@@ -66,9 +64,9 @@ class _FormPageState extends State<FormPage> {
             ],
             content: SingleChildScrollView(
               child: BlockPicker(
-                pickerColor: pickerColor,
-                onColorChanged: (Color color) {
-                  setState(() => pickerColor = color);
+                pickerColor: currentColor,
+                onColorChanged: (color) {
+                  setState(() => currentColor = color);
                 },
               ),
             ),
@@ -86,21 +84,26 @@ class _FormPageState extends State<FormPage> {
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              const Text('Pick Files'),
-              pickField(),
-              const Text('Birth'),
-              dateField(),
-              const Text('Favorit Color'),
-              colorField(),
-              const Text('About'),
-              aboutField(),
-              const SaveButton(),
-            ],
-          ),
+        child: Column(
+          children: [
+            const Text('Pick Files'),
+            pickField(),
+            const Text('Birth'),
+            dateField(),
+            const Text('Favorit Color'),
+            colorField(),
+            const Text('About'),
+            aboutField(),
+            ElevatedButton(
+                onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => ResultPage(
+                          imagePick: '',
+                          birthDate: dateCtl.text,
+                          colorFav: '',
+                          about: captionText.text,
+                        ))),
+                child: const Text("Save"))
+          ],
         ),
       ),
     );
