@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_week4_form_picker/result_page.dart';
@@ -5,25 +7,30 @@ import 'package:open_file/open_file.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
-class FormPage extends StatefulWidget {
-  const FormPage({super.key});
+class HomeForm extends StatefulWidget {
+  const HomeForm({super.key});
 
   @override
-  State<FormPage> createState() => _FormPageState();
+  State<HomeForm> createState() => _HomeFormState();
 }
 
-class _FormPageState extends State<FormPage> {
-  String? filePick;
+class _HomeFormState extends State<HomeForm> {
+  String pathText = 'Path....';
   TextEditingController dateCtl = TextEditingController();
   TextEditingController captionText = TextEditingController();
 
-  void _pickFile() async {
-    final result = await FilePicker.platform.pickFiles();
-    if (result == null) return;
+  dynamic fileResult;
 
-    // Hasil file dari object result
-    final file = result.files.first;
-    _openFile(file);
+  Future _pickFile() async {
+    final FilePickerResult? result = await FilePicker.platform.pickFiles();
+    // final result = await FilePicker.platform.pickFiles();
+    if (result != null) {
+      fileResult = File(result.files.single.path ?? '');
+      debugPrint("FILE_RESULT : ${fileResult?.path}");
+
+      setState(() {});
+      _openFile(result.files.first);
+    } else {}
   }
 
   void _openFile(PlatformFile file) {
@@ -89,24 +96,37 @@ class _FormPageState extends State<FormPage> {
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Pick Files'),
+            const Text('Pick Files',
+                style: TextStyle(fontWeight: FontWeight.bold)),
             pickField(),
-            const Text('Birth'),
+            const SizedBox(height: 12),
+            const Text('Birth', style: TextStyle(fontWeight: FontWeight.bold)),
             dateField(),
-            Text('Favorit Color : $currentColor'),
+            const SizedBox(height: 12),
+            const Text('Favorit Color',
+                style: TextStyle(fontWeight: FontWeight.bold)),
             colorField(),
-            const Text('About'),
+            const SizedBox(height: 12),
+            const Text('About', style: TextStyle(fontWeight: FontWeight.bold)),
             aboutField(),
-            ElevatedButton(
-                onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => ResultPage(
-                          imagePick: '',
-                          birthDate: dateCtl.text,
-                          colorFav: currentColor,
-                          about: captionText.text,
-                        ))),
-                child: const Text("Save"))
+            const SizedBox(height: 12),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                    onPressed: () =>
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => ResultPage(
+                                  imagePick: Image.file(fileResult),
+                                  birthDate: dateCtl.text,
+                                  colorFav: currentColor,
+                                  about: captionText.text,
+                                ))),
+                    child: const Text("Save")),
+              ],
+            )
           ],
         ),
       ),
@@ -118,7 +138,7 @@ class _FormPageState extends State<FormPage> {
       children: [
         Expanded(
             child: ElevatedButton(
-          child: const Text('Pick Files'),
+          child: Text('Pick Files $fileResult'),
           onPressed: () {
             _pickFile();
           },
